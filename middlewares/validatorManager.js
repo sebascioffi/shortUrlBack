@@ -4,8 +4,8 @@ import axios from "axios"
 
 export const bodyRegisterValidator = [
     body("email", "Formato de email incorrecto").trim().isEmail().normalizeEmail(),
-    body("password", "Mínimo 6 caracteres").trim().isLength({min:6}),
-    body("password", "Formato de password incorrecta").custom((value, {req}) => {
+    body("password", "La contraseña debe tener mínimo 6 caracteres").trim().isLength({min:6}),
+    body("password", "Formato de contraseña incorrecta").custom((value, {req}) => {
         if (value !== req.body.repassword){
             throw new Error("No coinciden las contraseñas") // en realidad la repassword se puede validar en el frontend mejor
         }
@@ -16,7 +16,7 @@ export const bodyRegisterValidator = [
 
 export const bodyLoginValidator = [
     body("email", "Formato de email incorrecto").trim().isEmail().normalizeEmail(),
-    body("password", "Mínimo 6 caracteres").trim().isLength({min:6}),
+    body("password", "La contraseña debe tener mínimo 6 caracteres").trim().isLength({min:6}),
     validationResultExpress
     ]
 
