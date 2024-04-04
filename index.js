@@ -21,7 +21,7 @@ app.use(cors({
     }
 }))
 */
-
+cors.SupportsCredentials = true;
 app.use(cors({
     origin: function(origin, callback){
         console.log("=> ", origin);
