@@ -14,14 +14,15 @@ export const generateToken = (uid) => {  //el payload se puede descifrar (es pub
 }
 
 export const generateRefreshToken = (uid, res) => {
-    console.log("modo: " + process.env.MODO);
+    console.log("modo secure: " + !(process.env.MODO === "developer"));
     const expiresIn = 60 * 60 * 24 * 30  // 30 dias
     try {
         const refreshToken = jwt.sign({uid}, process.env.JWT_REFRESH, {expiresIn})
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,     
             secure: !(process.env.MODO === "developer"),
-            expires: new Date(Date.now() + expiresIn * 1000) //esta en milisegundos por eso hay que multiplicarlo por mil.
+            expires: new Date(Date.now() + expiresIn * 1000), //esta en milisegundos por eso hay que multiplicarlo por mil.
+            domain: 'localhost'
         })  //la guardamos en la cookie porque da lo mismo si nos lo roban o no. esto es solo para regenerar otro token.
     } catch (error) {
         console.log(error);
