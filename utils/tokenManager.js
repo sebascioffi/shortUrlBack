@@ -21,8 +21,7 @@ export const generateRefreshToken = (uid, res) => {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,     
             secure: !(process.env.MODO === "developer"),
-            expires: new Date(Date.now() + expiresIn * 1000), //esta en milisegundos por eso hay que multiplicarlo por mil.
-            domain: 'localhost'
+            expires: new Date(Date.now() + expiresIn * 1000)//esta en milisegundos por eso hay que multiplicarlo por mil.
         })  //la guardamos en la cookie porque da lo mismo si nos lo roban o no. esto es solo para regenerar otro token.
     } catch (error) {
         console.log(error);
