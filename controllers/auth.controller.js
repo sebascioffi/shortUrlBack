@@ -38,15 +38,7 @@ export const login = async(req,res) => {
         }
 
         const {token, expiresIn} = generateToken(user._id)  //mando solo el id porque esta informacion es publica cualquiera puede acceder a ella
-
-        // res.cookie("token", token, {
-        //    httpOnly: true,     //no puede ser accedida desde el frontend, solo vive en la solicitud http
-        //    secure: !(process.env.MODO === "developer")  //el secure en produccion tiene que ser true y en desarrollo falso
-        // })  //entonces el token no está pudiendo ser accedida desde el frontend. aun asi, no es el método 100% seguro.
-        //desde el frontend para acceder al token que esta en la cookie, le puedo decir al fetch que incluya la cookie. credentials:"include".
-        //el riesgo es que la incluimos en la solicitud. una pagina maliciosa puede hacer un fetch y le enviariamos las credenciales. es por esto que podria llegar a nuestra informacion.
-        //lo que haremos el utilizar un refresh token
-
+        
         generateRefreshToken(user.id, res)
 
         return res.json({token, expiresIn})   

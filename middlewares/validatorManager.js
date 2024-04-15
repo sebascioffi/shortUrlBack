@@ -1,16 +1,10 @@
 import { body, param } from "express-validator"
 import { validationResultExpress } from "./validationResultExpress.js"
-import axios from "axios"
+import isUrl from 'is-url';
 
 export const bodyRegisterValidator = [
     body("email", "Formato de email incorrecto").trim().isEmail().normalizeEmail(),
     body("password", "La contraseña debe tener mínimo 6 caracteres").trim().isLength({min:6}),
-    body("password", "Formato de contraseña incorrecta").custom((value, {req}) => {
-        if (value !== req.body.repassword){
-            throw new Error("No coinciden las contraseñas") // en realidad la repassword se puede validar en el frontend mejor
-        }
-        return value
-    }),
     validationResultExpress
 ]
 
@@ -29,22 +23,27 @@ export const paramLinkValidator = [
 ]
 
 export const bodyLinkValidator = [
-    body("longLink", "formato link incorrecto")
+    body("longLink", "El formato del link es incorrecto")
     .trim()
     .notEmpty()
     .custom(async value => {
         try {
-
-            if (!value.startsWith("https://")){
-                value = "https://" + value
+            let newValue = value; // Crear una nueva variable para almacenar el valor modificado
+    
+            if (!newValue.startsWith("https://")) {
+                newValue = `https://${newValue}`; // Asignar el valor modificado a la nueva variable
             }
-
-
-            await axios.get(value)
-            return value
+    
+            const urlValida = isUrl(newValue);
+    
+            if (urlValida) {
+                return newValue;
+            } else {
+                throw new Error("El link es inválido");
+            }
         } catch (error) {
-            //console.log(error);
-            throw new Error("not found longlink 404")
+            console.log(error);
+            throw new Error("El link es inválido");
         }
     })
     ,validationResultExpress

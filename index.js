@@ -24,7 +24,6 @@ app.use(cors({
 cors.SupportsCredentials = true;
 app.use(cors({
     origin: function(origin, callback){
-        console.log("=> ", origin);
         if (whiteList.includes(origin)){
             return callback(null, origin)
         }
