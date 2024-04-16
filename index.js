@@ -24,7 +24,7 @@ app.use(cors({
 cors.SupportsCredentials = true;
 app.use(cors({
     origin: function(origin, callback){
-        if (whiteList.includes(origin)){
+        if (whiteList.includes(origin) || !origin){
             return callback(null, origin)
         }
         return callback("Error de CORS origin: " + origin + " No autorizado!")
