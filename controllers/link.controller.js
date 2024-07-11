@@ -38,6 +38,8 @@ export const createLink = async (req,res) => {
         if (!longLink.startsWith("https://")){
             longLink = "https://" + longLink
         }
+
+        console.log("Link creado con el uid: " + req.uid);
         const link = new Link({longLink, nanoLink: nanoid(6), uid: req.uid})
         const newLink = await link.save()
 
